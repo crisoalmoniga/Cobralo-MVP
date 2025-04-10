@@ -149,28 +149,36 @@ function calcularCobro() {
       alert("🎯 Ingresá una cantidad válida de horas estimadas para el evento.");
       return;
     }
-
-    const totalMensualNecesario = montoDeseado + gastos;
-    const conImpuestos = totalMensualNecesario * (1 + impuestos / 100);
-    const precioBaseHora = conImpuestos / horasEvento;
-    const conExperiencia = precioBaseHora * (1 + experiencia / 100);
+  
+    // 📌 Asumimos 22 días hábiles x 8 hs por día = 176 hs mensuales trabajadas
+    const horasLaboralesMensuales = 22 * 8;
+  
+    // 🧮 Cálculo del precio base por hora (ganancia + gastos divididos en 176 hs)
+    const precioBaseHora = (montoDeseado + gastos) / horasLaboralesMensuales;
+  
+    // 💸 Ajustes por impuestos, experiencia, tipo de cliente
+    const conImpuestos = precioBaseHora * (1 + impuestos / 100);
+    const conExperiencia = conImpuestos * (1 + experiencia / 100);
     const ajustadoCliente = conExperiencia * (1 + ajusteCliente / 100);
+  
+    // 💼 Precio total del evento
     const precioTotalEvento = ajustadoCliente * horasEvento;
-
+  
     document.getElementById('precioHora').innerHTML = `
       <strong>💰 Precio por hora:</strong>
       <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
       <strong>🎉 Precio total del evento:</strong>
       <span style="font-size: 1.4em; color: navy;">$${precioTotalEvento.toFixed(2)}</span>
     `;
-
+  
     document.getElementById('detalle').innerHTML = `
-      <small>📌 Cálculo directo en base a las horas del evento. Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>.</small>
+      <small>📌 Cálculo basado en 176 hs mensuales (22 días hábiles × 8 hs). Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>, impuestos <strong>${impuestos}%</strong>.</small>
     `;
-
+  
     document.getElementById('resultado').style.display = 'block';
     return;
   }
+  
 
   if (periodo === 'hora') {
     const totalMensualNecesario = montoDeseado / 0.5;
