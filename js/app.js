@@ -92,6 +92,10 @@ function calcularCobro() {
     }
 
     const horasTotales = diasHabilesProyecto * horasDiariasProyecto;
+    if (horasTotales <= 0) {
+      alert("⏱️ El proyecto no tiene horas hábiles válidas.");
+      return;
+    }
 
     // Días hábiles del mes
     const anio = fechaInicio.getFullYear();
@@ -106,14 +110,25 @@ function calcularCobro() {
       fechaMes.setDate(fechaMes.getDate() + 1);
     }
 
-    // Prorratear gastos
-    const gastosProporcionales = (gastos / diasHabilesMes) * diasHabilesProyecto;
+    if (diasHabilesMes === 0) {
+      alert("🗓️ No se detectaron días hábiles en el mes. Revisá la fecha.");
+      return;
+    }
+
+    // Cálculo final
+    const gastosNumericos = isNaN(gastos) ? 0 : gastos;
+    const gastosProporcionales = (gastosNumericos / diasHabilesMes) * diasHabilesProyecto;
     const totalProyectoNecesario = montoDeseado + gastosProporcionales;
     const conImpuestos = totalProyectoNecesario * (1 + impuestos / 100);
     const precioHora = conImpuestos / horasTotales;
     const ajustadoExperiencia = precioHora * (1 + experiencia / 100);
     const ajustadoCliente = ajustadoExperiencia * (1 + ajusteCliente / 100);
     const precioTotalProyecto = ajustadoCliente * horasTotales;
+
+    if (isNaN(precioTotalProyecto) || precioTotalProyecto <= 0) {
+      alert("🚨 Hubo un error en el cálculo. Verificá que todos los datos sean válidos.");
+      return;
+    }
 
     document.getElementById('precioHora').innerHTML = `
       <strong>💰 Precio por hora sugerido:</strong>
