@@ -115,20 +115,16 @@ function calcularCobro() {
       return;
     }
 
-    // Cálculo final
-    const gastosNumericos = isNaN(gastos) ? 0 : gastos;
-    const gastosProporcionales = (gastosNumericos / diasHabilesMes) * diasHabilesProyecto;
-    const totalProyectoNecesario = montoDeseado + gastosProporcionales;
-    const conImpuestos = totalProyectoNecesario * (1 + impuestos / 100);
-    const precioHora = conImpuestos / horasTotales;
-    const ajustadoExperiencia = precioHora * (1 + experiencia / 100);
-    const ajustadoCliente = ajustadoExperiencia * (1 + ajusteCliente / 100);
-    const precioTotalProyecto = ajustadoCliente * horasTotales;
+    // Nuevo cálculo proporcional por hora
+    const gastosProporcionales = (gastos / diasHabilesMes) * diasHabilesProyecto;
+    const gananciaProporcional = (montoDeseado / diasHabilesMes) * diasHabilesProyecto;
+    const totalProporcional = gastosProporcionales + gananciaProporcional;
 
-    if (isNaN(precioTotalProyecto) || precioTotalProyecto <= 0) {
-      alert("🚨 Hubo un error en el cálculo. Verificá que todos los datos sean válidos.");
-      return;
-    }
+    const precioHoraBase = totalProporcional / horasTotales;
+    const conImpuestos = precioHoraBase * (1 + impuestos / 100);
+    const conExperiencia = conImpuestos * (1 + experiencia / 100);
+    const ajustadoCliente = conExperiencia * (1 + ajusteCliente / 100);
+    const precioTotalProyecto = ajustadoCliente * horasTotales;
 
     document.getElementById('precioHora').innerHTML = `
       <strong>💰 Precio por hora sugerido:</strong>
@@ -140,7 +136,7 @@ function calcularCobro() {
     `;
 
     document.getElementById('detalle').innerHTML = `
-      <small>📌 Cálculo realista con <strong>gastos prorrateados</strong> según días hábiles del mes (<strong>${diasHabilesMes}</strong>) y del proyecto (<strong>${diasHabilesProyecto}</strong>). Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>.</small>
+      <small>📌 Cálculo basado en gastos y ganancias prorrateadas por días hábiles del mes (<strong>${diasHabilesMes}</strong>) y del proyecto (<strong>${diasHabilesProyecto}</strong>). Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>.</small>
     `;
 
     document.getElementById('resultado').style.display = 'block';
