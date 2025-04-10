@@ -82,17 +82,33 @@ function calcularCobro() {
       return;
     }
 
-    let diasHabiles = 0;
+    // Días hábiles del proyecto
+    let diasHabilesProyecto = 0;
     let fecha = new Date(fechaInicio);
     while (fecha <= fechaFin) {
       const dia = fecha.getDay();
-      if (dia !== 0 && dia !== 6) diasHabiles++;
+      if (dia !== 0 && dia !== 6) diasHabilesProyecto++;
       fecha.setDate(fecha.getDate() + 1);
     }
 
-    const horasTotales = diasHabiles * horasDiariasProyecto;
+    const horasTotales = diasHabilesProyecto * horasDiariasProyecto;
 
-    const totalProyectoNecesario = montoDeseado + gastos;
+    // Días hábiles del mes
+    const anio = fechaInicio.getFullYear();
+    const mes = fechaInicio.getMonth();
+    const primerDiaMes = new Date(anio, mes, 1);
+    const ultimoDiaMes = new Date(anio, mes + 1, 0);
+    let diasHabilesMes = 0;
+    let fechaMes = new Date(primerDiaMes);
+    while (fechaMes <= ultimoDiaMes) {
+      const dia = fechaMes.getDay();
+      if (dia !== 0 && dia !== 6) diasHabilesMes++;
+      fechaMes.setDate(fechaMes.getDate() + 1);
+    }
+
+    // Prorratear gastos
+    const gastosProporcionales = (gastos / diasHabilesMes) * diasHabilesProyecto;
+    const totalProyectoNecesario = montoDeseado + gastosProporcionales;
     const conImpuestos = totalProyectoNecesario * (1 + impuestos / 100);
     const precioHora = conImpuestos / horasTotales;
     const ajustadoExperiencia = precioHora * (1 + experiencia / 100);
@@ -109,7 +125,7 @@ function calcularCobro() {
     `;
 
     document.getElementById('detalle').innerHTML = `
-      <small>📌 Cálculo basado en el total de horas reales del proyecto. Días hábiles: <strong>${diasHabiles}</strong>. Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>.</small>
+      <small>📌 Cálculo realista con <strong>gastos prorrateados</strong> según días hábiles del mes (<strong>${diasHabilesMes}</strong>) y del proyecto (<strong>${diasHabilesProyecto}</strong>). Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>.</small>
     `;
 
     document.getElementById('resultado').style.display = 'block';
