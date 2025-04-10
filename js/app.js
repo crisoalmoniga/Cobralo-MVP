@@ -8,13 +8,33 @@ function mostrarCamposPeriodo() {
     container.innerHTML = '';
   
     if (periodo === 'proyecto') {
-      container.innerHTML += '<label>Fecha de inicio del proyecto:<br><input type="date" id="fechaInicio" onchange="this.blur()"></label>';
-      container.innerHTML += '<label>Fecha de finalización del proyecto:<br><input type="date" id="fechaFin" onchange="this.blur()"></label>';
-      container.innerHTML += '<label>Horas estimadas por día de trabajo: <input type="number" id="horasDiariasProyecto"></label>';
+      container.innerHTML += `
+        <label>Fecha de inicio del proyecto:<br>
+          <input type="date" id="fechaInicio" onchange="actualizarFechaFinMin(); this.blur()">
+        </label>`;
+      container.innerHTML += `
+        <label>Fecha de finalización del proyecto:<br>
+          <input type="date" id="fechaFin" onchange="this.blur()">
+        </label>`;
+      container.innerHTML += `
+        <label>Horas estimadas por día de trabajo:
+          <input type="number" id="horasDiariasProyecto">
+        </label>`;
     }
   
     if (periodo === 'evento') {
-      container.innerHTML += '<label>Horas estimadas del evento: <input type="number" id="horasEvento"></label>';
+      container.innerHTML += `
+        <label>Horas estimadas del evento:
+          <input type="number" id="horasEvento">
+        </label>`;
+    }
+  }
+  
+  function actualizarFechaFinMin() {
+    const inicio = document.getElementById('fechaInicio');
+    const fin = document.getElementById('fechaFin');
+    if (inicio && fin) {
+      fin.min = inicio.value;
     }
   }
   
@@ -57,8 +77,8 @@ function mostrarCamposPeriodo() {
       const fechaInicio = new Date(fechaInicioInput);
       const fechaFin = new Date(fechaFinInput);
   
-      if (fechaFin <= fechaInicio) {
-        alert("⚠️ La fecha de finalización debe ser posterior a la de inicio.");
+      if (fechaFin < fechaInicio) {
+        alert("⚠️ La fecha de finalización no puede ser anterior a la de inicio.");
         return;
       }
   
@@ -80,13 +100,18 @@ function mostrarCamposPeriodo() {
       const precioTotalProyecto = ajustadoCliente * horasTotales;
   
       document.getElementById('precioHora').innerHTML = `
-        <strong>💰 Precio por hora sugerido:</strong> <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
-        <strong>📆 Total de horas estimadas del proyecto:</strong> <span style="color: teal;">${horasTotales} hs</span><br>
-        <strong>💼 Precio total del proyecto:</strong> <span style="font-size: 1.4em; color: navy;">$${precioTotalProyecto.toFixed(2)}</span>
+        <strong>💰 Precio por hora sugerido:</strong>
+        <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
+        <strong>📆 Total de horas estimadas del proyecto:</strong>
+        <span style="color: teal;">${horasTotales} hs</span><br>
+        <strong>💼 Precio total del proyecto:</strong>
+        <span style="font-size: 1.4em; color: navy;">$${precioTotalProyecto.toFixed(2)}</span>
       `;
+  
       document.getElementById('detalle').innerHTML = `
         <small>📌 Calculado con regla <strong>50/30/20</strong>. Días hábiles detectados: <strong>${diasHabiles}</strong>. Ajuste cliente: <strong>${ajusteCliente}%</strong>.</small>
       `;
+  
       document.getElementById('resultado').style.display = 'block';
       return;
     }
@@ -101,23 +126,30 @@ function mostrarCamposPeriodo() {
       const precioTotalEvento = ajustadoCliente * horasEvento;
   
       document.getElementById('precioHora').innerHTML = `
-        <strong>💰 Precio por hora:</strong> <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
-        <strong>🎉 Precio total del evento:</strong> <span style="font-size: 1.4em; color: navy;">$${precioTotalEvento.toFixed(2)}</span>
+        <strong>💰 Precio por hora:</strong>
+        <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
+        <strong>🎉 Precio total del evento:</strong>
+        <span style="font-size: 1.4em; color: navy;">$${precioTotalEvento.toFixed(2)}</span>
       `;
+  
       document.getElementById('detalle').innerHTML = `
         <small>📌 Calculado con regla <strong>50/30/20</strong>, usando 132 hs/mes como referencia. Ajuste cliente: <strong>${ajusteCliente}%</strong>.</small>
       `;
+  
       document.getElementById('resultado').style.display = 'block';
       return;
     }
   
     if (periodo === 'hora') {
       document.getElementById('precioHora').innerHTML = `
-        <strong>💰 Precio por hora sugerido:</strong> <span style="font-size: 1.4em; color: darkblue;">$${ajustadoCliente.toFixed(2)}</span>
+        <strong>💰 Precio por hora sugerido:</strong>
+        <span style="font-size: 1.4em; color: darkblue;">$${ajustadoCliente.toFixed(2)}</span>
       `;
+  
       document.getElementById('detalle').innerHTML = `
         <small>📌 Basado en regla 50/30/20, con tus ajustes de experiencia e impuestos. Ajuste cliente: <strong>${ajusteCliente}%</strong>.</small>
       `;
+  
       document.getElementById('resultado').style.display = 'block';
       return;
     }
