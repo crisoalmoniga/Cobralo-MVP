@@ -1,24 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 2rem;
-    background: #f5f5f5;
-    color: #333;
-  }
-  input, select, button {
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    width: 100%;
-    max-width: 400px;
-  }
-  label {
-    display: block;
-    margin-top: 1rem;
-  }
-  #resultado {
-    margin-top: 2rem;
-    background: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px #ddd;
-  }
-  
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background: #f0f4f8;
+  color: #333;
+}
+
+h1 {
+  color: #1f2937;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* INPUTS & SELECTS UNIFICADOS */
+input, select {
+  margin-top: 0.25rem;
+  padding: 0.75rem;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* ESTÉTICA DE SELECTS CON FLECHITA PERSONALIZADA */
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 20 20'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+button {
+  margin-top: 2rem;
+  padding: 0.75rem 2rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+#resultado {
+  margin-top: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+#precioHora {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+#detalle {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* ANIMACIÓN SUAVE AL MOSTRAR RESULTADO */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
