@@ -1,3 +1,22 @@
+async function obtenerTasasDeCambio() {
+  try {
+    const res = await fetch("https://api.exchangerate.host/latest?base=ARS&symbols=USD,EUR");
+    const data = await res.json();
+    return {
+      ARS: 1,
+      USD: data.rates.USD,
+      EUR: data.rates.EUR
+    };
+  } catch (error) {
+    console.error("❌ Error al obtener las tasas de cambio:", error);
+    return {
+      ARS: 1,
+      USD: 1050,
+      EUR: 1150
+    };
+  }
+}
+
 function mostrarCamposPeriodo() {
   const periodoSelect = document.getElementById('periodo');
   if (!periodoSelect) return;
@@ -46,13 +65,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function calcularCobro() {
+async function calcularCobro() {
+  console.log("funcionando");
+
   const montoDeseado = parseFloat(document.getElementById('ingresos')?.value || 0);
   const gastos = parseFloat(document.getElementById('gastos')?.value || 0);
   const impuestos = parseFloat(document.getElementById('impuestos')?.value || 0);
   const experiencia = parseFloat(document.getElementById('experiencia')?.value || 0);
   const ajusteCliente = parseFloat(document.getElementById('cliente')?.value || 0);
   const periodo = document.getElementById('periodo')?.value;
+
+  const monedaPrincipal = document.getElementById('monedaPrincipal')?.value || 'ARS';
+  const monedaSecundaria = document.getElementById('monedaSecundaria')?.value;
+
+  const tasasCambio = await obtenerTasasDeCambio();
+  document.getElementById('tasaCambioInfo').innerText =
+    `💱 Tasas actualizadas (ARS → USD: ${tasasCambio.USD.toFixed(2)}, EUR: ${tasasCambio.EUR.toFixed(2)})`;
+
+  const convertir = (valorARS, monedaDestino) => valorARS / tasasCambio[monedaDestino];
+  const simbolo = monedaPrincipal === 'USD' ? 'US$' : (monedaPrincipal === 'EUR' ? '€' : '$');
+  const simboloSec = monedaSecundaria === 'USD' ? 'US$' : (monedaSecundaria === 'EUR' ? '€' : '$');
 
   if (!periodo) {
     alert("⚠️ No se pudo obtener el tipo de período de trabajo. Verificá el formulario.");
@@ -82,7 +114,7 @@ function calcularCobro() {
       return;
     }
 
-    // Días hábiles del proyecto
+    // Calcular días hábiles del proyecto
     let diasHabilesProyecto = 0;
     let fecha = new Date(fechaInicio);
     while (fecha <= fechaFin) {
@@ -97,7 +129,7 @@ function calcularCobro() {
       return;
     }
 
-    // Días hábiles del mes
+    // Calcular días hábiles del mes
     const anio = fechaInicio.getFullYear();
     const mes = fechaInicio.getMonth();
     const primerDiaMes = new Date(anio, mes, 1);
@@ -115,7 +147,7 @@ function calcularCobro() {
       return;
     }
 
-    // Nuevo cálculo proporcional por hora
+    // Calcular precios
     const gastosProporcionales = (gastos / diasHabilesMes) * diasHabilesProyecto;
     const gananciaProporcional = (montoDeseado / diasHabilesMes) * diasHabilesProyecto;
     const totalProporcional = gastosProporcionales + gananciaProporcional;
@@ -124,15 +156,31 @@ function calcularCobro() {
     const conImpuestos = precioHoraBase * (1 + impuestos / 100);
     const conExperiencia = conImpuestos * (1 + experiencia / 100);
     const ajustadoCliente = conExperiencia * (1 + ajusteCliente / 100);
-    const precioTotalProyecto = ajustadoCliente * horasTotales;
+    const precioTotal = ajustadoCliente * horasTotales;
+
+    const precioHoraConvertida = convertir(ajustadoCliente, monedaPrincipal);
+    const totalConvertido = convertir(precioTotal, monedaPrincipal);
+
+    let textoSecundario = '';
+    if (monedaSecundaria && monedaSecundaria !== monedaPrincipal) {
+      const secundarioHora = convertir(ajustadoCliente, monedaSecundaria);
+      const secundarioTotal = convertir(precioTotal, monedaSecundaria);
+      textoSecundario = `
+        <br>
+        <small style="color: lightgray;">
+          (${simboloSec}${secundarioHora.toFixed(2)} por hora – Total: ${simboloSec}${secundarioTotal.toFixed(2)})
+        </small>`;
+    }
 
     document.getElementById('precioHora').innerHTML = `
       <strong>💰 Precio por hora sugerido:</strong>
-      <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
+      <span style="font-size: 1.2em; color: darkgreen;">${simbolo}${precioHoraConvertida.toFixed(2)}</span>
+      ${textoSecundario}
+      <br>
       <strong>📆 Total de horas estimadas del proyecto:</strong>
       <span style="color: teal;">${horasTotales} hs</span><br>
       <strong>💼 Precio total del proyecto:</strong>
-      <span style="font-size: 1.4em; color: navy;">$${precioTotalProyecto.toFixed(2)}</span>
+      <span style="font-size: 1.4em; color: navy;">${simbolo}${totalConvertido.toFixed(2)}</span>
     `;
 
     document.getElementById('detalle').innerHTML = `
@@ -140,65 +188,5 @@ function calcularCobro() {
     `;
 
     document.getElementById('resultado').style.display = 'block';
-    return;
   }
-
-  if (periodo === 'evento') {
-    const horasEvento = parseFloat(document.getElementById('horasEvento')?.value || 0);
-    if (horasEvento <= 0) {
-      alert("🎯 Ingresá una cantidad válida de horas estimadas para el evento.");
-      return;
-    }
-  
-    // 📌 Asumimos 22 días hábiles x 8 hs por día = 176 hs mensuales trabajadas
-    const horasLaboralesMensuales = 22 * 8;
-  
-    // 🧮 Cálculo del precio base por hora (ganancia + gastos divididos en 176 hs)
-    const precioBaseHora = (montoDeseado + gastos) / horasLaboralesMensuales;
-  
-    // 💸 Ajustes por impuestos, experiencia, tipo de cliente
-    const conImpuestos = precioBaseHora * (1 + impuestos / 100);
-    const conExperiencia = conImpuestos * (1 + experiencia / 100);
-    const ajustadoCliente = conExperiencia * (1 + ajusteCliente / 100);
-  
-    // 💼 Precio total del evento
-    const precioTotalEvento = ajustadoCliente * horasEvento;
-  
-    document.getElementById('precioHora').innerHTML = `
-      <strong>💰 Precio por hora:</strong>
-      <span style="font-size: 1.2em; color: darkgreen;">$${ajustadoCliente.toFixed(2)}</span><br>
-      <strong>🎉 Precio total del evento:</strong>
-      <span style="font-size: 1.4em; color: navy;">$${precioTotalEvento.toFixed(2)}</span>
-    `;
-  
-    document.getElementById('detalle').innerHTML = `
-      <small>📌 Cálculo basado en 176 hs mensuales (22 días hábiles × 8 hs). Ajustes aplicados: experiencia <strong>${experiencia}%</strong>, cliente <strong>${ajusteCliente}%</strong>, impuestos <strong>${impuestos}%</strong>.</small>
-    `;
-  
-    document.getElementById('resultado').style.display = 'block';
-    return;
-  }
-  
-
-  if (periodo === 'hora') {
-    const totalMensualNecesario = montoDeseado / 0.5;
-    const conImpuestos = totalMensualNecesario * (1 + impuestos / 100);
-    const precioBaseHora = conImpuestos / 132;
-    const conExperiencia = precioBaseHora * (1 + experiencia / 100);
-    const ajustadoCliente = conExperiencia * (1 + ajusteCliente / 100);
-
-    document.getElementById('precioHora').innerHTML = `
-      <strong>💰 Precio por hora sugerido:</strong>
-      <span style="font-size: 1.4em; color: darkblue;">$${ajustadoCliente.toFixed(2)}</span>
-    `;
-
-    document.getElementById('detalle').innerHTML = `
-      <small>📌 Basado en regla 50/30/20, con tus ajustes de experiencia e impuestos. Ajuste cliente: <strong>${ajusteCliente}%</strong>.</small>
-    `;
-
-    document.getElementById('resultado').style.display = 'block';
-    return;
-  }
-
-  alert("🛑 Este cálculo solo está disponible para trabajos por proyecto, evento u hora.");
 }

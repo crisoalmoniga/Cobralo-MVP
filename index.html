@@ -47,6 +47,25 @@
 
   <div id="camposPeriodo"></div>
 
+
+  <label>Moneda para visualizar el resultado:
+    <select id="monedaPrincipal">
+      <option value="ARS">ARS (Pesos Argentinos)</option>
+      <option value="USD">USD (Dólares)</option>
+      <option value="EUR">EUR (Euros)</option>
+    </select>
+  </label>
+
+  <label>Mostrar también en:
+    <select id="monedaSecundaria">
+      <option value="">(Opcional)</option>
+      <option value="ARS">ARS (Pesos Argentinos)</option>
+      <option value="USD">USD (Dólares)</option>
+      <option value="EUR">EUR (Euros)</option>
+    </select>
+  </label>
+  <small id="tasaCambioInfo" style="color: gray;"></small>
+
   <button onclick="calcularCobro()">Calcular</button>
 
   <div id="resultado" style="display:none;">
