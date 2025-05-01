@@ -16,6 +16,40 @@ body {
   padding: 2rem;
 }
 
+/* Barra de navegación superior */
+.navbar {
+  background-color: var(--gris-oscuro);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 2rem;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--verde-neon);
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar .nav-links a {
+  text-decoration: none;
+  color: var(--blanco);
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+  color: var(--verde-neon);
+}
+
+/* Títulos */
 h1 {
   font-size: 2.5rem;
   font-weight: 600;
@@ -60,6 +94,16 @@ select {
   padding-right: 2.5rem;
 }
 
+/* Agrupaciones visuales */
+.form-section {
+  background: rgba(46, 46, 46, 0.6);
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 10px rgba(0, 255, 153, 0.05);
+}
+
+/* Botones */
 button {
   margin-top: 2rem;
   padding: 0.75rem 2rem;
@@ -77,12 +121,14 @@ button:hover {
   color: var(--negro-mate);
 }
 
+/* Resultado */
 #resultado {
   margin-top: 2rem;
   background: var(--gris-oscuro);
   padding: 1.5rem;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(0, 255, 153, 0.1);
+  animation: fadeInUp 0.4s ease;
 }
 
 #precioHora {
@@ -94,4 +140,10 @@ button:hover {
 #detalle {
   font-size: 0.95rem;
   color: var(--blanco);
+}
+
+/* Animación suave */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
