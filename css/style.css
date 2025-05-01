@@ -1,34 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+:root {
+  --verde-neon: #33FF99;
+  --negro-mate: #1A1A1A;
+  --gris-oscuro: #2E2E2E;
+  --gris-medio: #4D4D4D;
+  --blanco: #FFFFFF;
+}
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(180deg, #FF007F 0%, #00D8E0 100%);
-  color: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--negro-mate);
+  color: var(--blanco);
   margin: 0;
   padding: 2rem;
 }
 
 h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2.2rem;
-  color: #A6E22E;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--verde-neon);
+  letter-spacing: 1px;
 }
 
 p, label, select, input, button {
   font-size: 1rem;
-  color: #FFFFFF;
+  color: var(--blanco);
+}
+
+label {
+  display: block;
+  margin-top: 1.2rem;
+  font-weight: 500;
+  color: var(--blanco);
 }
 
 input, select {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-  border: 1px solid #7D3C98;
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  border: 1px solid var(--gris-medio);
   border-radius: 12px;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   margin-top: 0.25rem;
   width: 100%;
-  max-width: 420px;
-  backdrop-filter: blur(4px);
+  max-width: 440px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: var(--verde-neon);
+  outline: none;
 }
 
 select {
@@ -42,34 +63,35 @@ select {
 button {
   margin-top: 2rem;
   padding: 0.75rem 2rem;
-  background-color: #A6E22E;
-  color: #1A1A1A;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
+  background-color: var(--negro-mate);
+  color: var(--verde-neon);
+  border: 2px solid var(--verde-neon);
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #D2FF4C;
+  background-color: var(--verde-neon);
+  color: var(--negro-mate);
 }
 
 #resultado {
   margin-top: 2rem;
-  background: rgba(26, 26, 26, 0.85);
+  background: var(--gris-oscuro);
   padding: 1.5rem;
   border-radius: 16px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 153, 0.1);
 }
 
 #precioHora {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #00D8E0;
+  color: var(--verde-neon);
 }
 
 #detalle {
-  font-size: 0.9rem;
-  color: #ffffff;
+  font-size: 0.95rem;
+  color: var(--blanco);
 }
