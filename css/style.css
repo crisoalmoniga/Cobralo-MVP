@@ -1,50 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@400;500&display=swap');
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(180deg, #FF007F 0%, #00D8E0 100%);
+  color: #FFFFFF;
   margin: 0;
   padding: 2rem;
-  background: #edf2f3; /* fondo claro de marca */
-  color: #222f3c;       /* texto principal */
 }
 
 h1 {
-  color: #222f3c;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  color: #A6E22E;
 }
 
-p {
-  color: #4c7370;
-  margin-bottom: 2rem;
-}
-
-label {
-  display: block;
-  margin-top: 1rem;
-  font-weight: 600;
-  color: #222f3c;
-}
-
-/* INPUTS & SELECTS UNIFICADOS */
-input, select {
-  margin-top: 0.25rem;
-  padding: 0.75rem;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid #cfd8dc;
-  border-radius: 8px;
+p, label, select, input, button {
   font-size: 1rem;
-  background: white;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  color: #FFFFFF;
 }
 
-/* ESTÉTICA DE SELECTS CON FLECHITA PERSONALIZADA */
+input, select {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  border: 1px solid #7D3C98;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(4px);
+}
+
 select {
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234c7370' viewBox='0 0 20 20'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23FFFFFF' viewBox='0 0 20 20'%3E%3Cpath d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 1rem;
@@ -54,44 +42,34 @@ select {
 button {
   margin-top: 2rem;
   padding: 0.75rem 2rem;
-  background-color: #33b2a4; /* verde vibrante de marca */
-  color: white;
+  background-color: #A6E22E;
+  color: #1A1A1A;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #2da093;
-  transform: translateY(-1px);
+  background-color: #D2FF4C;
 }
 
 #resultado {
   margin-top: 2rem;
-  background: white;
+  background: rgba(26, 26, 26, 0.85);
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  animation: fadeIn 0.3s ease-in-out;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
 #precioHora {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  color: #33b2a4; /* verde principal */
+  color: #00D8E0;
 }
 
 #detalle {
-  font-size: 0.95rem;
-  color: #4c7370;
-  margin-top: 0.5rem;
-}
-
-/* ANIMACIÓN SUAVE AL MOSTRAR RESULTADO */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  font-size: 0.9rem;
+  color: #ffffff;
 }
