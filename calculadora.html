@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cobralo - Calculadora</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="logo-cobralo.png">
+</head>
+<body>
+  
+<nav class="navbar">
+  <div class="logo">COBRALO</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="calculadora.html">Calculadora</a></li>
+    <li><a href="sobre.html">Sobre Cobralo</a></li>
+  </ul>
+</nav>
+
+  <section id="calculadora">
+    <h2>Calculadora freelance</h2>
+    <p>Completá los siguientes campos para obtener tu presupuesto ideal:</p>
+    <div class="form-section">
+      <label>¿Cuánto querés ganar este mes? Sumando este y otros trabajos (ARS):
+        <input type="number" id="ingresos" />
+      </label>
+      <label>Sumá y poné acá todos tus gastos mensuales (Se van a distribuir según corresponda) (ARS):
+        <input type="number" id="gastos" />
+      </label>
+      <label>¿Querés diferenciar tus Impuestos/retenciones? Si ponés en 0 no pasa nada. (%):
+        <input type="number" id="impuestos" />
+      </label>
+    </div>
+    <div class="form-section">
+      <label>Tu nivel de experiencia:
+        <select id="experiencia">
+          <option value="0">Principiante</option>
+          <option value="10">Intermedio (+10%)</option>
+          <option value="20">Experto (+20%)</option>
+        </select>
+      </label>
+      <label>¿A qué tipo de cliente vas a presupuestar?:
+        <select id="cliente">
+          <option value="0">Cliente A (Empresa/Estudio grande)</option>
+          <option value="-10">Cliente B (Pyme/Estudio mediano)</option>
+          <option value="-20">Cliente C (Emprendedor)</option>
+        </select>
+      </label>
+    </div>
+    <div class="form-section">
+      <label>¿Durante cuánto tiempo vas a trabajar?:
+        <select id="periodo">
+          <option value="proyecto">Por proyecto</option>
+          <option value="evento">Por evento</option>
+          <option value="hora">Por hora</option>
+        </select>
+      </label>
+      <div id="camposPeriodo"></div>
+    </div>
+    <div class="form-section">
+      <label>Moneda para visualizar el resultado:
+        <select id="monedaPrincipal">
+          <option value="ARS">ARS (Pesos Argentinos)</option>
+          <option value="USD">USD (Dólares)</option>
+          <option value="EUR">EUR (Euros)</option>
+        </select>
+      </label>
+      <label>Mostrar también en:
+        <select id="monedaSecundaria">
+          <option value="">(Opcional)</option>
+          <option value="ARS">ARS (Pesos Argentinos)</option>
+          <option value="USD">USD (Dólares)</option>
+          <option value="EUR">EUR (Euros)</option>
+        </select>
+      </label>
+      <small id="tasaCambioInfo" style="color: gray;"></small>
+    </div>
+    <button onclick="calcularCobro()">Calcular</button>
+    <div id="resultado" style="display:none;">
+      <h3>Resultado</h3>
+      <p id="precioHora"></p>
+      <p id="detalle"></p>
+    </div>
+  </section>
+  <script src="js/app.js"></script>
+</body>
+</html>
